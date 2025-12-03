@@ -3,53 +3,37 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $pseudo = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mdp = null;
+    /**
+     * @var list<string> The user roles
+     */
+    #[ORM\Column]
+    private array $roles = [];
 
     /**
-     * @var Collection<int, Task>
+     * @var string The hashed password
      */
-    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'user_id')]
-    private Collection $tasks;
-
-    public function __construct()
-    {
-        $this->tasks = new ArrayCollection();
-    }
+    #[ORM\Column]
+    private ?string $password = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(?string $pseudo): static
-    {
-        $this->pseudo = $pseudo;
-
-        return $this;
     }
 
     public function getEmail(): ?string
@@ -57,52 +41,74 @@ class User
         return $this->email;
     }
 
-    public function setEmail(?string $email): static
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getMdp(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
     {
-        return $this->mdp;
+        return (string) $this->email;
     }
 
-    public function setMdp(?string $mdp): static
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        $this->mdp = $mdp;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Task>
+     * @see PasswordAuthenticatedUserInterface
      */
-    public function getTasks(): Collection
+    public function getPassword(): ?string
     {
-        return $this->tasks;
+        return $this->password;
     }
 
-    public function addTask(Task $task): static
+    public function setPassword(string $password): static
     {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks->add($task);
-            $task->setUserId($this);
-        }
+        $this->password = $password;
 
         return $this;
     }
 
-    public function removeTask(Task $task): static
+    /**
+     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
+     */
+    public function __serialize(): array
     {
-        if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
-            if ($task->getUserId() === $this) {
-                $task->setUserId(null);
-            }
-        }
+        $data = (array) $this;
+        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
 
-        return $this;
+        return $data;
+    }
+
+    #[\Deprecated]
+    public function eraseCredentials(): void
+    {
+        // @deprecated, to be removed when upgrading to Symfony 8
     }
 }
