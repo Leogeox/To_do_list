@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-// Imports
-
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
@@ -15,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class TaskController extends AbstractController
 {
-    #[Route('/task', name: 'app_task', methods: ['GET', 'POST'])]
+    #[Route('/task', name: 'app_task')]
     public function index(Request $request, EntityManagerInterface $em, TaskRepository $repo): Response
     {
         $task = new Task();
