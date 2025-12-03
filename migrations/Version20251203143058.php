@@ -20,7 +20,7 @@ final class Version20251203143058 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE task ADD status VARCHAR(255) NOT NULL, ADD user_id_id INT NOT NULL');
+        $this->addSql('ALTER TABLE task ADD status VARCHAR(255) DEFAULT "0%", ADD user_id_id INT NOT NULL');
         $this->addSql('ALTER TABLE task ADD CONSTRAINT FK_527EDB259D86650F FOREIGN KEY (user_id_id) REFERENCES user (id)');
         $this->addSql('CREATE INDEX IDX_527EDB259D86650F ON task (user_id_id)');
     }
