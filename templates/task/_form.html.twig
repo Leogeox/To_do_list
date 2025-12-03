@@ -1,0 +1,22 @@
+<div class="card">
+    <h2>Create your task</h2>
+
+    {{ form_start(form) }}
+
+        <div class="form-group">
+            {# Le label, le widget et les erreurs sont regroupés pour chaque champ #}
+            {{ form_label(form.name) }} 
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <button type="submit">Créer</button>
+
+    {{ form_end(form) }}
+</div>
