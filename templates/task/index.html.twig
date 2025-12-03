@@ -19,6 +19,7 @@
                 <tr>
                     <th>Nom</th>
                     <th>Description</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -27,6 +28,7 @@
                     <tr>
                         <td>{{ t.name }}</td>
                         <td>{{ t.description }}</td>
+                        <td>{{ t.status }}</td>
                         <td><input method="POST" type="submit" name="update" value="update"></td>
                         <td><input method="DELETE" type="submit" name="delete" value="delete"></td>
                     </tr>

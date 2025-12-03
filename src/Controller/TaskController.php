@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Controller;
+
+// Imports
 
 use App\Entity\Task;
 use App\Form\TaskType;
@@ -10,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
 
 final class TaskController extends AbstractController
 {
@@ -25,9 +27,7 @@ final class TaskController extends AbstractController
             $em->persist($task);
             $em->flush();
 
-            $this->addFlash('success', 'Produit créé !');
-
-            return $this->redirectToRoute('app_task');
+            return $this->redirect($request->getUri());
         }
 
         $task = $repo->findAll();
@@ -37,14 +37,4 @@ final class TaskController extends AbstractController
             'task' => $task
         ]);
     }
-
-    // #[Route('/task/save', name: 'app_task_save')]
-    // public function sauvegarder(Request $request)
-    // {
-    //     //Accès au donnée du formulaire
-    //     $formData = $request->request->all('task');
-
-    //     //Retourne le nom de la tache
-    //     return new Response($formData['name']);
-    // }
 }
