@@ -16,6 +16,6 @@ final class HomeController extends AbstractController
             return $this->redirectToRoute('app_task');
         }
 
-        return $this->redirectToRoute('app_register');
+        return $this->render('home/index.html.twig');
     }
 }

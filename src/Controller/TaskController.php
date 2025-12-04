@@ -56,7 +56,7 @@ final class TaskController extends AbstractController
             'progress' => 'oui',
             'oui' => 'non',
         };
-
+        
         $task->setStatus($NouveauxStatus);
         $entityManager->flush();
 
