@@ -53,3 +53,25 @@ final class TaskController extends AbstractController
         }
 }
 
+    public function index(Request $request, EntityManagerInterface $em, TaskRepository $repo): Response
+    {
+        $task = new Task();
+        $form = $this->createForm(TaskType::class, $task);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($task);
+            $em->flush();
+
+            return $this->redirect($request->getUri());
+        }
+
+        $task = $repo->findAll();
+
+        return $this->render('task/index.html.twig', [
+            'form' => $form->createView(),
+            'task' => $task
+        ]);
+    }
+}

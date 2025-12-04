@@ -54,3 +54,38 @@
 </div>
 {% endblock %}
 
+    <h1>Your Todo Website!</h1>
+
+    {% include 'task/_form.html.twig' with {'form': form} %}
+
+    <div class="card">
+        <h2>Your list of task</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in task %}
+                    <tr>
+                        <td>{{ t.name }}</td>
+                        <td>{{ t.description }}</td>
+                        <td>{{ t.status }}</td>
+                        <td><input method="POST" type="submit" name="update" value="update"></td>
+                        <td><input method="DELETE" type="submit" name="delete" value="delete"></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="empty-row">You do not have any task for the moment. Add one to start!</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
