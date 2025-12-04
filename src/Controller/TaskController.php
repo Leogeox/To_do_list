@@ -1,15 +1,16 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class TaskController extends AbstractController
 {
@@ -23,7 +24,7 @@ final class TaskController extends AbstractController
             'tasks' => $tasks,
         ]);
     }
-    
+
 
 
     #[Route('/task/{id}/status', name: 'task_changement_status')]
@@ -45,15 +46,14 @@ final class TaskController extends AbstractController
 
 
     #[Route('/task/{id}/delete', name: 'task_delete')]
-        public function delete(Task $task, EntityManagerInterface $entityManager): RedirectResponse
-        {
-            $entityManager->remove($task);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_task');
-        }
-}
+    public function delete(Task $task, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $entityManager->remove($task);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_task');
+    }
 
-    public function index(Request $request, EntityManagerInterface $em, TaskRepository $repo): Response
+    public function createTask(Request $request, EntityManagerInterface $em, TaskRepository $repo): Response
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
