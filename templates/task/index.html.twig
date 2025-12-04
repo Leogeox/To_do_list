@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My Task Board{% endblock %}
+
+
+{% block title %}Mon tableau de tache {% endblock %}
+
 
 {% block body %}
+<a href="{{ path('app_logout') }}" class="">Déconnexion</a>
 <div class="container">
 
+ {% include 'task/_form.html.twig' with {'form': form} %}
 {% for task in tasks %}
 
 {% if task.status == 'progress' %}
@@ -52,6 +57,8 @@
 
 
 </div>
+{% endblock %}
+
 {# Leo #}
 {# {% endblock %}
 

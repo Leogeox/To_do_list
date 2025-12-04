@@ -15,13 +15,32 @@ use Symfony\Component\Routing\Attribute\Route;
 final class TaskController extends AbstractController
 {
     #[Route('/task', name: 'app_task')]
-    public function index(TaskRepository $taskRepository, UserRepository $userRepository): Response
+    public function index(TaskRepository $taskRepository, EntityManagerInterface $entityManager,Request $request): Response
     {
-        $user = $userRepository->find(1); //teste avec mon compte faudra le remplacer quand y aura le systeme de connexion
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $task = new Task();
+        $form = $this->createForm(TaskType::class, $task);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $task->setUserId($user);
+            $entityManager->persist($task);
+            $entityManager->flush();
+
+            return $this->redirect($request->getUri());
+        }
         $tasks = $taskRepository->findBy(['user_id' => $user], ['id' => 'ASC']);
 
         return $this->render('task/index.html.twig', [
-            'tasks' => $tasks,
+            'form' => $form->createView(),
+            'tasks' => $tasks
         ]);
     }
 
@@ -53,25 +72,5 @@ final class TaskController extends AbstractController
         return $this->redirectToRoute('app_task');
     }
 
-    public function createTask(Request $request, EntityManagerInterface $em, TaskRepository $repo): Response
-    {
-        $task = new Task();
-        $form = $this->createForm(TaskType::class, $task);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($task);
-            $em->flush();
-
-            return $this->redirect($request->getUri());
-        }
-
-        $task = $repo->findAll();
-
-        return $this->render('task/index.html.twig', [
-            'form' => $form->createView(),
-            'task' => $task
-        ]);
-    }
+   
 }
