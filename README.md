@@ -31,5 +31,5 @@ php bin/console doctrine:migrations:migrate (??)
 
 <h2>Les URL des pages suivantes</h2>
 -  Créer son compte : /user/register <br>
--  Se connecter a son compte : /user/login <br>
+-  Se connecter a son compte : /login <br>
 -  Voir/Update & Delete ses taches : /task
