@@ -1,11 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/product.css') }}">
-{% endblock %}
+{% block title %}My Task Board{% endblock %}
 
 {% block body %}
 <div class="container">
+
+{% for task in tasks %}
+
+{% if task.status == 'progress' %}
+    {% set couleur = 'orange' %} 
+    {% set icon =  asset('images/Coffee.png') %}
+    {% set statusImg = asset('images/Hourglass.png') %}
+
+
+{% elseif task.status == 'oui' %}
+    {% set couleur = 'vert' %}
+    {% set icon = asset('images/Bicycle.png') %}
+    {% set statusImg = asset('images/Done.png') %}
+
+
+{% elseif task.status == 'non' %}
+    {% set couleur = 'rouge' %}
+    {% set icon = asset('images/Sleeping_Face.png') %}
+    {% set statusImg = asset('images/Close.png') %}
+
+
+{% endif %}
+
+
+<div class="task-card {{ couleur }}">
+    <div class="content">
+        <div class="icon"><img src="{{ icon }}"></div>
+        <div class="details">
+            <div class="task-title">{{ task.name }}</div>
+            {% if task.description %}
+             <div class="task-description">{{ task.description }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <a href="{{ path('task_changement_status', {'id': task.id}) }}"  class="status" ><img src="{{ statusImg }}"></a>
+<div class="bouton-delete">
+    <a href="{{ path('task_delete', {'id': task.id}) }}"  class="delete" >x</a>
+    </div>
+</div>
+
+ {% else %}
+ <div class="message-vide">Aucune tâche trouvée.</div>
+{% endfor %}
+
+
+</div>
+{% endblock %}
 
     <h1>Your Todo Website!</h1>
 

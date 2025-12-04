@@ -1,3 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
 body {
-    background: rgb(255, 255, 255);
+    font-family: "Poppins", sans-serif;
+}
+.container {
+    max-width: 450px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.task-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.content {
+    display: flex;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 12px;
+    width: 45px;
+    height: 45px;
+    font-size: 1.5rem;
+    margin-right: 15px;
+}
+
+.details {
+    flex-grow: 1;
+}
+
+.task-title {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1rem;
+    line-height: 1.2;
+}
+
+.task-description {
+    color: #666;
+    font-size: 0.85rem;
+    margin-top: 2px;
+}
+
+.status {
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.orange {
+    background-color: #f5d565;
+}
+.orange .status {
+    background-color: #efa943;
+}
+
+.vert {
+    background-color: #a0e8af;
+}
+.vert .status {
+    background-color: #32cd32;
+}
+
+.rouge {
+    background-color: #f7d4d6;
+}
+.rouge .status {
+    background-color: #e65b65;
+}
+
+a {
+    color: #ff0000;
+    text-decoration: none;
+}
+a img {
+    width: 70%;
+}
+
+.bouton-delete {
+    position: absolute;
+    top: 0;
+    right: 10px;
 }

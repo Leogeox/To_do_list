@@ -20,7 +20,7 @@ class Task
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    private string $status = "0%";
+    private string $status = "non";
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
