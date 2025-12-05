@@ -50,12 +50,17 @@ final class TaskController extends AbstractController
     public function toggleStatus(Task $task, EntityManagerInterface $entityManager): RedirectResponse
     {
         $StatusActuel = $task->getStatus();
-
-        $NouveauxStatus = match ($StatusActuel) {
-            'non' => 'progress',
-            'progress' => 'oui',
-            'oui' => 'non',
-        };
+        
+        if ($StatusActuel == 'non'){
+            $NouveauxStatus = 'progress';
+        }
+        elseif ($StatusActuel == 'progress'){
+            $NouveauxStatus = 'oui';
+        }
+        else{
+            $NouveauxStatus = 'non';
+        }
+        
         
         $task->setStatus($NouveauxStatus);
         $entityManager->flush();

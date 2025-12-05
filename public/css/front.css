@@ -317,10 +317,6 @@ input[type="submit"]:active {
     cursor: pointer;
 }
 
-.task-card .status:hover {
-    background-color: #f3f4f6;
-}
-
 .task-card .bouton-delete {
     margin-left: 1rem;
 }
@@ -374,4 +370,10 @@ a[href*="logout"]:hover {
     background-color: #fee2e2;
     color: #b91c1c;
     border: 1px solid #fecaca;
+}
+
+.align {
+    display: flex;
+    width: 100%;
+    align-items: center;
 }

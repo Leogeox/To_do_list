@@ -32,7 +32,7 @@
 
 {% endif %}
 
-
+<a href="{{ path('task_changement_status', {'id': task.id}) }}"  class="status align" >
 <div class="task-card {{ couleur }}">
     <div class="content">
         <div class="icon"><img src="{{ icon }}"></div>
@@ -45,7 +45,8 @@
     </div>
 
 
-    <a href="{{ path('task_changement_status', {'id': task.id}) }}"  class="status" ><img src="{{ statusImg }}"></a>
+    <img src="{{ statusImg }}">
+    </a>
 <div class="bouton-delete">
     <a href="{{ path('task_delete', {'id': task.id}) }}"  class="delete" >x</a>
     </div>
