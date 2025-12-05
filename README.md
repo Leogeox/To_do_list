@@ -25,7 +25,10 @@ php bin/console doctrine:database:create todo
 // Si la commande ne fonctionne pas, créer la base de données manuellement.
 php bin/console doctrine:migrations:migrate
 ```
-
+Lancer le projet 
+``` php
+php -S localhost:3000 -t public
+```
 <h2>Les URL des pages suivantes</h2>
 -  Créer son compte : /register <br>
 -  Se connecter a son compte : /login <br>
