@@ -14,8 +14,6 @@ Télécharger les dépendences :
 
 ``` php
 composer install
-composer require symfony/runtime
-// Si besoin.
 ```
 Créer la BDD (Base de Données) :
 
@@ -25,11 +23,10 @@ Créer la BDD (Base de Données) :
 
 php bin/console doctrine:database:create todo
 // Si la commande ne fonctionne pas, créer la base de données manuellement.
-php bin/console make:migration
-php bin/console doctrine:migrations:migrate (??)
+php bin/console doctrine:migrations:migrate
 ```
 
 <h2>Les URL des pages suivantes</h2>
--  Créer son compte : /user/register <br>
+-  Créer son compte : /register <br>
 -  Se connecter a son compte : /login <br>
 -  Voir/Update & Delete ses taches : /task
