@@ -15,12 +15,22 @@ use Symfony\Component\Routing\Attribute\Route;
 final class TaskController extends AbstractController
 {
     #[Route('/task', name: 'app_task')]
-    public function index(TaskRepository $taskRepository, EntityManagerInterface $entityManager,Request $request): Response
+    public function index(TaskRepository $taskRepository, EntityManagerInterface $entityManager,Request $request, UserRepository $userRepository): Response
     {
         $user = $this->getUser();
 
+        // Mode preview : utiliser un utilisateur démo si non connecté
         if (!$user) {
-            return $this->redirectToRoute('app_login');
+            $user = $userRepository->findOneBy(['email' => 'demo@preview.com']);
+            
+            // Créer l'utilisateur démo s'il n'existe pas
+            if (!$user) {
+                $user = new \App\Entity\User();
+                $user->setEmail('demo@preview.com');
+                $user->setPassword('demo'); // Mot de passe fictif pour preview
+                $entityManager->persist($user);
+                $entityManager->flush();
+            }
         }
 
         $task = new Task();
@@ -40,7 +50,8 @@ final class TaskController extends AbstractController
 
         return $this->render('task/index.html.twig', [
             'form' => $form->createView(),
-            'tasks' => $tasks
+            'tasks' => $tasks,
+            'preview_mode' => !$this->getUser()
         ]);
     }
 

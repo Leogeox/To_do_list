@@ -6,7 +6,17 @@
 
 
 {% block body %}
-<a href="{{ path('app_logout') }}" class="">Déconnexion</a>
+<div class="header-bar">
+    {% if preview_mode %}
+        <div class="preview-badge">
+            <span class="badge-preview">Mode Preview</span>
+            <a href="{{ path('app_register') }}" class="btn-small">Créer un compte</a>
+            <a href="{{ path('app_login') }}" class="btn-small">Se connecter</a>
+        </div>
+    {% else %}
+        <a href="{{ path('app_logout') }}" class="btn-logout">Déconnexion</a>
+    {% endif %}
+</div>
 <div class="container">
 
  {% include 'task/_form.html.twig' with {'form': form} %}

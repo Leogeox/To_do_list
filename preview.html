@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List - Preview Portfolio</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #ec4899;
+            --background-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .preview-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .preview-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .btn-clear {
+            padding: 0.5rem 1rem;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .card h2 {
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #f9fafb;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: var(--shadow-md);
+            width: 100%;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .task-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-md);
+            border-left: 4px solid;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .task-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .task-card.rouge {
+            border-left-color: var(--danger-color);
+            background: linear-gradient(135deg, #fee2e2 0%, white 100%);
+        }
+
+        .task-card.orange {
+            border-left-color: var(--warning-color);
+            background: linear-gradient(135deg, #fef3c7 0%, white 100%);
+        }
+
+        .task-card.vert {
+            border-left-color: var(--success-color);
+            background: linear-gradient(135deg, #d1fae5 0%, white 100%);
+        }
+
+        .content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+        }
+
+        .details {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .task-description {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .status-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .bouton-delete {
+            margin-left: 1rem;
+        }
+
+        .delete {
+            background: var(--danger-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .delete:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        .message-vide {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-lg);
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="preview-info">
+            <span class="preview-badge">🎯 Mode Preview - Stockage Local</span>
+            <span class="preview-note">⚠️ Version simplifiée · Fonctionnalités limitées pour la démonstration</span>
+        </div>
+        <button class="btn-clear" onclick="clearAllTasks()">Réinitialiser les tâches</button>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Créer une tâche</h2>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label for="taskName">Nom de la tâche</label>
+                    <input type="text" id="taskName" name="name" required placeholder="Entrez le nom de la tâche">
+                </div>
+                <div class="form-group">
+                    <label for="taskDescription">Description (optionnelle)</label>
+                    <textarea id="taskDescription" name="description" placeholder="Ajoutez une description"></textarea>
+                </div>
+                <button type="submit">Créer</button>
+            </form>
+        </div>
+
+        <div id="tasksList"></div>
+    </div>
+
+    <script>
+        // Gestion du localStorage
+        function getTasks() {
+            const tasks = localStorage.getItem('todoTasks');
+            return tasks ? JSON.parse(tasks) : [];
+        }
+
+        function saveTasks(tasks) {
+            localStorage.setItem('todoTasks', JSON.stringify(tasks));
+        }
+
+        // Icônes pour chaque statut
+        const statusConfig = {
+            'non': {
+                color: 'rouge',
+                icon: '😴',
+                statusIcon: '❌',
+                nextStatus: 'progress'
+            },
+            'progress': {
+                color: 'orange',
+                icon: '☕',
+                statusIcon: '⏳',
+                nextStatus: 'oui'
+            },
+            'oui': {
+                color: 'vert',
+                icon: '🚴',
+                statusIcon: '✅',
+                nextStatus: 'non'
+            }
+        };
+
+        // Ajouter une tâche
+        document.getElementById('taskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('taskName').value;
+            const description = document.getElementById('taskDescription').value;
+            
+            const tasks = getTasks();
+            const newTask = {
+                id: Date.now(),
+                name: name,
+                description: description,
+                status: 'non'
+            };
+            
+            tasks.push(newTask);
+            saveTasks(tasks);
+            
+            // Réinitialiser le formulaire
+            this.reset();
+            
+            // Rafraîchir la liste
+            renderTasks();
+        });
+
+        // Changer le statut d'une tâche
+        function toggleStatus(taskId) {
+            const tasks = getTasks();
+            const task = tasks.find(t => t.id === taskId);
+            
+            if (task) {
+                const currentStatus = task.status;
+                task.status = statusConfig[currentStatus].nextStatus;
+                saveTasks(tasks);
+                renderTasks();
+            }
+        }
+
+        // Supprimer une tâche
+        function deleteTask(taskId, event) {
+            event.stopPropagation();
+            
+            const tasks = getTasks();
+            const filteredTasks = tasks.filter(t => t.id !== taskId);
+            saveTasks(filteredTasks);
+            renderTasks();
+        }
+
+        // Réinitialiser toutes les tâches
+        function clearAllTasks() {
+            if (confirm('Êtes-vous sûr de vouloir supprimer toutes les tâches ?')) {
+                localStorage.removeItem('todoTasks');
+                renderTasks();
+            }
+        }
+
+        // Afficher les tâches
+        function renderTasks() {
+            const tasks = getTasks();
+            const tasksList = document.getElementById('tasksList');
+            
+            if (tasks.length === 0) {
+                tasksList.innerHTML = '<div class="message-vide">Aucune tâche trouvée. Créez votre première tâche !</div>';
+                return;
+            }
+            
+            tasksList.innerHTML = tasks.map(task => {
+                const config = statusConfig[task.status];
+                return `
+                    <div class="task-card ${config.color}" onclick="toggleStatus(${task.id})">
+                        <div class="content">
+                            <div class="icon">${config.icon}</div>
+                            <div class="details">
+                                <div class="task-title">${task.name}</div>
+                                ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
+                            </div>
+                        </div>
+                        <span class="status-icon">${config.statusIcon}</span>
+                        <div class="bouton-delete">
+                            <button class="delete" onclick="deleteTask(${task.id}, event)">×</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialiser les tâches par défaut pour la démo
+        function initDefaultTasks() {
+            const tasks = getTasks();
+            if (tasks.length === 0) {
+                const defaultTasks = [
+                    { id: 1, name: 'Apprendre JavaScript', description: 'Maîtriser les bases du langage', status: 'oui' },
+                    { id: 2, name: 'Créer un portfolio', description: 'Développer un site vitrine professionnel', status: 'progress' },
+                    { id: 3, name: 'Réviser pour les examens', description: '', status: 'non' }
+                ];
+                saveTasks(defaultTasks);
+            }
+        }
+
+        // Charger les tâches au démarrage
+        initDefaultTasks();
+        renderTasks();
+    </script>
+</body>
+</html>
